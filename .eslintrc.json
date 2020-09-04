@@ -1,0 +1,45 @@
+{
+  "env": {
+    "es2021": true,
+    "node": true,
+    "jest": true
+  },
+  "extends": [
+    "standard",
+    "prettier/standard"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "prettier",
+    "import-helpers"
+  ],
+  "rules": {
+    "prettier/prettier": "error",
+    "class-methods-use-this": "off",
+    "no-param-reassign": "off",
+    "camelcase": "off",
+    "space-before-function-paren": "off",
+    "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        "newlinesBetween": "always",
+        "groups": [
+          "module",
+          "/^~/models/",
+          "/^~/services/",
+          "/^~/middlewares/",
+          "/^~/controllers/",
+          "/^~/views/",
+          "/^~/config/",
+          "/^~/tests/",
+          ["parent", "sibling", "index"]
+        ],
+        "alphabetize": { "order": "asc", "ignoreCase": true }
+      }
+    ]
+  }
+}

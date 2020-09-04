@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "~/controllers/*": ["./src/app/controllers/*"],
+      "~/models/*": ["./src/app/models/*"],
+      "~/views/*": ["./src/app/views/*"],
+      "~/middlewares/*": ["./src/app/middlewares/*"],
+      "~/services/*": ["./src/app/services/*"],
+      "~/config/*": ["./src/config/*"],
+      "~/tests/*": ["./tests/*"]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

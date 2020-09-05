@@ -11,11 +11,6 @@ class Database {
       useNewUrlParser: true,
       useUnifiedTopology: true
     })
-
-    const db = mongoose.connection
-    db.once('open', function () {
-      console.log('Database is running...')
-    })
   }
 }
 

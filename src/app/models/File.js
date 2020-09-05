@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-import { url } from '../../config/app'
+import configApp from '../../config/app'
 
 const FileSchema = new mongoose.Schema(
   {
@@ -23,7 +23,7 @@ const FileSchema = new mongoose.Schema(
 )
 
 FileSchema.method.getUrl(function () {
-  return `${url}/files/${this.path}`
+  return `${configApp.url}/files/${this.path}`
 })
 
 export default mongoose.model('File', FileSchema)

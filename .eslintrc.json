@@ -29,13 +29,6 @@
         "newlinesBetween": "always",
         "groups": [
           "module",
-          "/^~/models/",
-          "/^~/services/",
-          "/^~/middlewares/",
-          "/^~/controllers/",
-          "/^~/views/",
-          "/^~/config/",
-          "/^~/tests/",
           ["parent", "sibling", "index"]
         ],
         "alphabetize": { "order": "asc", "ignoreCase": true }

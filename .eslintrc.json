@@ -29,6 +29,12 @@
         "newlinesBetween": "always",
         "groups": [
           "module",
+          "/models/",
+          "/middlewares/",
+          "/controllers/",
+          "/services/",
+          "/views/",
+          "/config/",
           ["parent", "sibling", "index"]
         ],
         "alphabetize": { "order": "asc", "ignoreCase": true }

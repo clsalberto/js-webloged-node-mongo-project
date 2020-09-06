@@ -1,7 +1,5 @@
 import mongoose from 'mongoose'
 
-import configApp from '../../config/app'
-
 const FileSchema = new mongoose.Schema(
   {
     name: {
@@ -22,8 +20,8 @@ const FileSchema = new mongoose.Schema(
   }
 )
 
-FileSchema.method.getUrl(function () {
-  return `${configApp.url}/files/${this.path}`
+FileSchema.virtual('url').get(function () {
+  return `${process.env.APP_URL}/file/${this.path}`
 })
 
 export default mongoose.model('File', FileSchema)

@@ -14,7 +14,7 @@ class RegisterController {
 
     const user = await User.create({ name, surname, email, password })
 
-    // user.password = undefined
+    user.password = undefined
 
     return response.json(user)
   }

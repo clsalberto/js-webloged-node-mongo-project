@@ -30,7 +30,7 @@ class App {
     this.server.use(express.json())
 
     this.server.use(
-      '/files',
+      '/file',
       express.static(resolve(__dirname, '..', '..', 'tmp', 'uploads'))
     )
   }

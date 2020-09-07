@@ -8,11 +8,11 @@ class UploadController {
   }
 
   async store(request, response) {
-    const { originalname: name, filename: path, size } = request.file
+    const { originalname: name, filename: path, path: url, size } = request.file
 
-    const file = await File.create({ name, path, size })
+    const file = await File.create({ name, path, url, size })
 
-    return response.json({ file, url: file.url })
+    return response.json(file)
   }
 }
 

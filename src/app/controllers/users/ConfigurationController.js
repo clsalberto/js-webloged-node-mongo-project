@@ -3,7 +3,13 @@ import User from '../../models/User'
 class ConfigurationController {
   async update(request, response) {
     const { userId } = request.params
-    const { blogName, primaryColor, secundaryColor, theme } = request.body
+    const {
+      blogName,
+      primaryColor,
+      secundaryColor,
+      domain,
+      theme
+    } = request.body
 
     const user = await User.findById(userId)
 
@@ -12,7 +18,7 @@ class ConfigurationController {
     }
 
     await user.updateOne({
-      configuration: { blogName, primaryColor, secundaryColor, theme }
+      configuration: { blogName, primaryColor, secundaryColor, domain, theme }
     })
 
     return response.json(user)

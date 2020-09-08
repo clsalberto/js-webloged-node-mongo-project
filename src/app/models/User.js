@@ -35,6 +35,7 @@ const UserSchema = new mongoose.Schema(
       blogName: String,
       primaryColor: String,
       secundaryColor: String,
+      domain: String,
       theme: String
     },
     actived: {

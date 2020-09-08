@@ -13,11 +13,12 @@ class UserController {
 
     const user = await User.findById(userId)
     const file = await File.findById(user.avatar._id)
-
-    await file.deleteOne()
+    if (file) {
+      await file.deleteOne()
+    }
     await user.deleteOne()
 
-    return response.json()
+    return response.json({ message: 'User deleted' })
   }
 }
 

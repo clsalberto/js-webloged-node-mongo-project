@@ -1,7 +1,10 @@
 import { Router } from 'express'
 import multer from 'multer'
 
+import authMiddleware from '../app/middlewares/auth'
+
 import UploadController from '../app/controllers/files/UploadController'
+import AuthenticationController from '../app/controllers/users/AuthenticationController'
 import AvatarController from '../app/controllers/users/AvatarController'
 import ConfigurationController from '../app/controllers/users/ConfigurationController'
 import ProfileController from '../app/controllers/users/ProfileController'
@@ -16,6 +19,11 @@ const upload = multer(multerConfig)
 routes.get('/', (request, response) =>
   response.json({ message: 'Welcome to Project' })
 )
+
+/* Authentication Rotes */
+routes.post('/authenticate', AuthenticationController.store)
+
+routes.use(authMiddleware)
 
 routes.get('/files', UploadController.index)
 routes.post('/files', upload.single('file'), UploadController.store)

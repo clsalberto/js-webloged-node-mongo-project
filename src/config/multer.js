@@ -14,7 +14,7 @@ storageCloud.config({
 
 const storageLocal = multer.diskStorage({
   destination: resolve(__dirname, '..', '..', 'tmp', 'uploads'),
-  filename: (_request, file, cb) => {
+  filename: (request, file, cb) => {
     crypto.randomBytes(16, (error, response) => {
       if (error) return cb(error)
       return cb(null, response.toString('hex') + extname(file.originalname))
@@ -25,7 +25,6 @@ const storageLocal = multer.diskStorage({
 const storageCloudinary = new CloudinaryStorage({
   cloudinary: storageCloud,
   params: {
-    // eslint-disable-next-line no-unused-vars
     folder: (request, file) => {
       const { dir } = request.query
       return !dir ? 'webloged' : `webloged/${dir}`

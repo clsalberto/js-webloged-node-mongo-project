@@ -1,11 +1,13 @@
 import 'dotenv/config'
 import 'express-async-errors'
 
+import BullBoard from 'bull-board'
 import cors from 'cors'
 import express from 'express'
 import helmet from 'helmet'
 import { resolve } from 'path'
 
+import Queue from '../libs/Queue'
 import routes from '../routes'
 
 import '../database'
@@ -13,6 +15,8 @@ import '../database'
 class App {
   constructor() {
     this.server = express()
+
+    BullBoard.setQueues(Queue.queues.map(queue => queue.bull))
 
     this.middlewares()
     this.routes()
@@ -33,6 +37,8 @@ class App {
       '/file',
       express.static(resolve(__dirname, '..', '..', 'tmp', 'uploads'))
     )
+
+    this.server.use('/admin/queues', BullBoard.UI)
   }
 
   routes() {

@@ -1,5 +1,7 @@
 import User from '../../models/User'
 
+import Queue from '../../../libs/Queue'
+
 class RegisterController {
   async store(request, response) {
     const { name, surname, email, password } = request.body
@@ -15,6 +17,8 @@ class RegisterController {
     const user = await User.create({ name, surname, email, password })
 
     user.password = undefined
+
+    await Queue.add('RegistrationMail', { user })
 
     return response.json(user)
   }

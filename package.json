@@ -13,7 +13,7 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "build": "babel src --out-dir dist --copy-files --no-copy-ignored",
-    "start": "npm run build && pm2 start dist/server.js --name webloged --watch",
+    "start": "pm2 start src/server.js --name webloged --watch",
     "release": "standard-version",
     "test": "jest"
   },

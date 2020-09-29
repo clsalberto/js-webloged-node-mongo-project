@@ -1,13 +1,11 @@
 import 'dotenv/config'
 import 'express-async-errors'
-
-import BullBoard from 'bull-board'
 import cors from 'cors'
 import express from 'express'
 import helmet from 'helmet'
 import { resolve } from 'path'
+import Youch from 'youch'
 
-import Queue from '../libs/Queue'
 import routes from '../routes'
 
 import '../database'
@@ -15,8 +13,6 @@ import '../database'
 class App {
   constructor() {
     this.server = express()
-
-    BullBoard.setQueues(Queue.queues.map(queue => queue.bull))
 
     this.middlewares()
     this.routes()
@@ -37,8 +33,6 @@ class App {
       '/file',
       express.static(resolve(__dirname, '..', '..', 'tmp', 'uploads'))
     )
-
-    this.server.use('/admin/queues', BullBoard.UI)
   }
 
   routes() {
@@ -48,7 +42,9 @@ class App {
   exceptionHandler() {
     this.server.use(async (error, request, response, next) => {
       if (process.env.NODE_ENV === 'development') {
-        return response.json(error)
+        const errors = await new Youch(error, request).toJSON()
+
+        return response.status(500).json(errors)
       }
 
       return response.status(500).json({ error: 'Internal server error' })

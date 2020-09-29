@@ -4,13 +4,11 @@ import multer from 'multer'
 import { CloudinaryStorage } from 'multer-storage-cloudinary'
 import { extname, resolve } from 'path'
 
+import configCloud from '../config/cloudinary'
+
 const storageCloud = cloudinary.v2
 
-storageCloud.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
-})
+storageCloud.config(configCloud)
 
 const storageLocal = multer.diskStorage({
   destination: resolve(__dirname, '..', '..', 'tmp', 'uploads'),

@@ -35,6 +35,7 @@
           "/services/",
           "/views/",
           "/config/",
+          "/libs/",
           ["parent", "sibling", "index"]
         ],
         "alphabetize": { "order": "asc", "ignoreCase": true }

@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 
-import appConfig from '../../config/app'
+import authConfig from '../../config/auth'
 
 export default (request, response, next) => {
   const authHeader = request.headers.authorization
@@ -21,7 +21,7 @@ export default (request, response, next) => {
     return response.status(401).json({ error: 'Token malformatted' })
   }
 
-  jwt.verify(token, appConfig.secret, (err, decoded) => {
+  jwt.verify(token, authConfig.secret, (err, decoded) => {
     if (err) return response.status(401).json({ error: 'Token invalid' })
 
     request.userId = decoded.id

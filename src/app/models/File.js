@@ -4,6 +4,8 @@ import mongoose from 'mongoose'
 import { resolve } from 'path'
 import { promisify } from 'util'
 
+import configCloud from '../../config/cloudinary'
+
 const FileSchema = new mongoose.Schema(
   {
     name: {
@@ -42,11 +44,7 @@ FileSchema.pre('deleteOne', { document: true }, function () {
   } else {
     const storageCloud = cloudinary.v2
 
-    storageCloud.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_API_SECRET
-    })
+    storageCloud.config(configCloud)
 
     return storageCloud.api.delete_resources([this.path])
   }

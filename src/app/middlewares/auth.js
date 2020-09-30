@@ -1,29 +1,45 @@
 import jwt from 'jsonwebtoken'
 
+import Domain from '../models/Domain'
+
 import authConfig from '../../config/auth'
 
-export default (request, response, next) => {
-  const authHeader = request.headers.authorization
+export default async (request, response, next) => {
+  const { authorization } = request.headers
+  const { domain } = request.params
 
-  if (!authHeader) {
-    return response.status(401).json({ error: 'No token provided' })
+  if (!domain) {
+    return response.status(401).json({ error: 'No domain provided.' })
   }
 
-  const parts = authHeader.split(' ')
+  const domainExist = await Domain.findOne({
+    slug: domain
+  })
+
+  if (!domainExist) {
+    return response.status(401).json({ error: 'Domain does not exist.' })
+  }
+
+  if (!authorization) {
+    return response.status(401).json({ error: 'No token provided.' })
+  }
+
+  const parts = authorization.split(' ')
 
   if (!parts.length === 2) {
-    return response.status(401).json({ error: 'Token error' })
+    return response.status(401).json({ error: 'Token error.' })
   }
 
   const [scheme, token] = parts
 
   if (!/^Bearer$/i.test(scheme)) {
-    return response.status(401).json({ error: 'Token malformatted' })
+    return response.status(401).json({ error: 'Token malformatted.' })
   }
 
-  jwt.verify(token, authConfig.secret, (err, decoded) => {
-    if (err) return response.status(401).json({ error: 'Token invalid' })
+  jwt.verify(token, authConfig.secret, (error, decoded) => {
+    if (error) return response.status(401).json({ error: 'Token invalid.' })
 
+    request.domainId = domainExist._id
     request.userId = decoded.id
     return next()
   })

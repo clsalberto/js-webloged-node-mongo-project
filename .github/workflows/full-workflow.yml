@@ -40,8 +40,8 @@ jobs:
           SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: ./scripts/deploy.sh
 
-      - name: Deployment
+      - name: Deployment Webloged
         if: github.ref == 'refs/heads/master'
-        run: git remote add umbler https://geonosis.deploy.umbler.com/jnyd80re/api-webloged-com-br.git && git push umbler master
+        run: git remote add umbler ssh://git@geonosis.deploy.umbler.com:9922/jnyd80re/api-webloged-com-br.git && git push umbler master
         env:
           CI: true

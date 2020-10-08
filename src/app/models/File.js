@@ -1,10 +1,7 @@
 import cloudinary from 'cloudinary'
-import fs from 'fs'
 import mongoose from 'mongoose'
-import { resolve } from 'path'
-import { promisify } from 'util'
 
-import configCloud from '../../config/cloudinary'
+import Storage from '../../libs/Storage'
 
 const FileSchema = new mongoose.Schema(
   {
@@ -26,28 +23,18 @@ const FileSchema = new mongoose.Schema(
     }
   },
   {
-    timestamps: true
+    timestamps: true,
+    toJSON: {
+      transform: (doc, ret) => {
+        delete ret.__v
+      }
+    }
   }
 )
 
-FileSchema.pre('save', function () {
-  if (process.env.STORAGE_TYPE === 'local') {
-    return `${process.env.APP_URL}/file/${this.path}`
-  }
-})
-
-FileSchema.pre('deleteOne', { document: true }, function () {
-  if (process.env.STORAGE_TYPE === 'local') {
-    return promisify(fs.unlink)(
-      resolve(__dirname, '..', '..', '..', 'tmp', 'uploads', this.path)
-    )
-  } else {
-    const storageCloud = cloudinary.v2
-
-    storageCloud.config(configCloud)
-
-    return storageCloud.api.delete_resources([this.path])
-  }
+FileSchema.pre('deleteOne', { document: true }, async function () {
+  const file = `${this.path}.${this.format}`
+  return await Storage.destroy(file)
 })
 
 export default mongoose.model('File', FileSchema)

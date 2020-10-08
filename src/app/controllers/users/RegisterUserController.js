@@ -16,11 +16,11 @@ class RegisterUserController {
 
       const user = await User.create({ name, surname, email, password })
 
-      const hash = crypto.randomBytes(20).toString('hex')
-      const expired = new Date()
-      expired.setHours(expired.getHours() + 1)
-
       if (user) {
+        const hash = crypto.randomBytes(20).toString('hex')
+        const expired = new Date()
+        expired.setHours(expired.getHours() + 1)
+
         await Token.create({ email, hash, expired })
       }
 

@@ -1,5 +1,7 @@
 import File from '../../models/File'
 
+import Storage from '../../../libs/Storage'
+
 class UploadController {
   async index(request, response) {
     const files = await File.find()
@@ -8,9 +10,18 @@ class UploadController {
   }
 
   async store(request, response) {
-    const { originalname: name, filename: path, path: url, size } = request.file
+    const { domain } = request.params
+    const { dir } = request.query
+    const { filename: name, path: filepath, size } = request.file
 
-    const file = await File.create({ name, path, url, size })
+    const {
+      secure_url: url,
+      public_id: path,
+      resource_type: type,
+      format
+    } = await Storage.upload(dir ? `${domain}/${dir}` : domain, filepath)
+
+    const file = await File.create({ name, type, format, path, url, size })
 
     return response.json(file)
   }

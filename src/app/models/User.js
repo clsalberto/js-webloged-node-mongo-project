@@ -26,15 +26,10 @@ const UserSchema = new mongoose.Schema(
       required: true,
       select: false
     },
-    profile: {
-      gender: String,
-      birthDate: String,
-      aboutMe: String
-    },
-    domains: [
+    blogs: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Domain'
+        ref: 'Blog'
       }
     ],
     active: {

@@ -33,18 +33,6 @@ class Storage {
       return result
     })
   }
-
-  image(fid, options) {
-    return this.storage.image(`${fid}.png`, options)
-  }
-
-  video(fid, options) {
-    return this.storage.video(`${fid}.mp4`, options)
-  }
-
-  file(fid, options) {
-    return this.storage.image(`${fid}.pdf`, options)
-  }
 }
 
 export default new Storage()

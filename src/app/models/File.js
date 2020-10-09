@@ -33,8 +33,7 @@ const FileSchema = new mongoose.Schema(
 )
 
 FileSchema.pre('deleteOne', { document: true }, async function () {
-  const file = `${this.path}.${this.format}`
-  return await Storage.destroy(file)
+  return await Storage.destroy(this.path)
 })
 
 export default mongoose.model('File', FileSchema)

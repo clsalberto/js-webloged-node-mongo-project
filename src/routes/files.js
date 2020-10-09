@@ -9,7 +9,6 @@ const routes = Router()
 const upload = multer(multerConfig)
 
 /* File Upload Rotes */
-routes.get('/:domain/files', UploadController.index)
 routes.post('/:domain/files', upload.single('file'), UploadController.store)
 
 export default routes

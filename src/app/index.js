@@ -28,11 +28,6 @@ class App {
 
     this.server.use(helmet())
     this.server.use(express.json())
-
-    this.server.use(
-      '/file',
-      express.static(resolve(__dirname, '..', '..', 'tmp', 'uploads'))
-    )
   }
 
   routes() {

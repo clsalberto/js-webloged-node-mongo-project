@@ -7,6 +7,7 @@ const routes = Router()
 
 /* Blog Rotes */
 routes.get('/:domain', BlogController.index)
-routes.post('/domain/:hash', RegisterBlogController.store)
+routes.post('/blogs/:hash', RegisterBlogController.store)
+routes.post('/blogs/:userId', BlogController.store)
 
 export default routes

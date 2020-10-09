@@ -12,11 +12,13 @@ class RegisterBlogController {
       const token = await Token.findOne({ hash })
 
       if (!token) {
-        return response.status(400).json({ error: 'Token does not exist.' })
+        return response.status(400).json({ error: 'Token not found.' })
       }
 
       if (token.status === 'USED') {
-        return response.status(400).json({ error: 'Token already used.' })
+        return response
+          .status(400)
+          .json({ error: 'Token has already been used.' })
       }
 
       if (token.expired < new Date()) {
@@ -25,7 +27,7 @@ class RegisterBlogController {
             status: 'EXPIRED'
           })
         }
-        return response.status(400).json({ error: 'Expired token.' })
+        return response.status(400).json({ error: 'Token has expired.' })
       }
 
       const user = await User.findOne({
@@ -33,7 +35,7 @@ class RegisterBlogController {
       })
 
       if (!user) {
-        return response.status(400).json({ error: 'User does not exist.' })
+        return response.status(400).json({ error: 'User not found.' })
       }
 
       const blog = await Blog.create({
@@ -51,9 +53,11 @@ class RegisterBlogController {
         active: true
       })
 
-      return response.json(blog)
+      return response.json({
+        message: 'Blog successfully created and activated.'
+      })
     } catch (error) {
-      return response.json({ error })
+      return response.status(400).json(error)
     }
   }
 }

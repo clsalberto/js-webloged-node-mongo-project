@@ -6,10 +6,6 @@ import cloudinaryConfig from '../config/cloudinary'
 
 class Storage {
   constructor() {
-    this.init()
-  }
-
-  init() {
     this.storage = cloudinary.v2
     this.storage.config(cloudinaryConfig)
   }
@@ -25,7 +21,7 @@ class Storage {
         }
       )
     } finally {
-      if (process.env.STORAGE_TYPE === 'cloudinary') {
+      if (process.env.STORAGE_TYPE !== 'local') {
         promisify(fs.unlink)(file)
       }
     }
@@ -38,8 +34,16 @@ class Storage {
     })
   }
 
-  async image(fid, options = {}) {
-    return this.storage.image(fid, options)
+  image(fid, options) {
+    return this.storage.image(`${fid}.png`, options)
+  }
+
+  video(fid, options) {
+    return this.storage.video(`${fid}.mp4`, options)
+  }
+
+  file(fid, options) {
+    return this.storage.image(`${fid}.pdf`, options)
   }
 }
 

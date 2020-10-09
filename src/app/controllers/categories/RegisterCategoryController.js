@@ -1,6 +1,7 @@
 import Blog from '../../models/Blog'
-import Category from '../../models/Category'
 import File from '../../models/File'
+
+import Storage from '../../../libs/Storage'
 
 class RegisterCategoryController {
   async store(request, response) {
@@ -11,29 +12,39 @@ class RegisterCategoryController {
       const blog = await Blog.findOne({ domain })
 
       if (!blog) {
-        return response.status(400).json({ error: 'Blog not exists.' })
+        return response.status(400).json({ error: 'Blog not found.' })
       }
 
-      const category = await Category.create({
-        blog: blog._id,
-        name,
-        slug
-      })
+      const category = { name, slug }
 
       if (request.file) {
-        const {
-          originalname: filename,
-          filename: path,
-          path: url,
+        const { filename, path, size } = request.file
+
+        const dir = `${domain}/categories`
+
+        const { secure_url, public_id } = await Storage.upload(dir, path)
+
+        await blog.files.push({
+          name: filename,
+          path: public_id,
+          url: secure_url,
           size
-        } = request.file
-        const file = await File.create({ name: filename, path, url, size })
-        await category.updateOne({ image: file._id })
+        })
+
+        await blog.save()
+
+        const file = await blog.files.filter(file => file.name === filename)[0]
+
+        category.image = file._id
       }
 
-      return response.json(category)
+      await blog.categories.push(category)
+
+      await blog.save()
+
+      return response.json({ message: 'Category created successfully.' })
     } catch (error) {
-      return response.json(error)
+      return response.json({ error })
     }
   }
 }
